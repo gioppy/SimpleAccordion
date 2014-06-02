@@ -1,11 +1,13 @@
 (function ($) {
+  var settings;
   var setup = {
     accordion: function (target, settings) {
       $(target).each(function () {
           var $this = $(this);
-          $('.accordion-button:not(.disabled)', $this).click(function () {
-            $(this).next().slideToggle('normal');
-            $(this).toggleClass('on');
+          $(target, $this).on('click', '.accordion-button:not(.disabled)', function () {
+            $(this).toggleClass('on').next().slideToggle('normal');
+            if(settings.classic)
+              $(".accordion-content").not($(this).next()).slideUp('normal').prev().removeClass('on');
           });
 
           $('.accordion-content', $this).hide();
@@ -15,7 +17,10 @@
 	methods = {
     init: function (options) {
       if (this.length) {
-        var settings = {}
+        settings = {
+          classic:true
+        };
+        
         return this.each(function () {
           if (options) {
             $.extend(settings, options)
